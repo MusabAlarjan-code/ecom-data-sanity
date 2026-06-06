@@ -21,7 +21,8 @@ st.markdown(
     div[data-testid="stExpander"] { text-align: right; direction: rtl; }
     </style>
 """,
-    unsafe_index=True,
+    unsafe_allow_html=True,
+    
 )
 
 
