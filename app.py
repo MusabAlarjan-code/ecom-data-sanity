@@ -3,37 +3,10 @@ import pandas as pd
 import numpy as np
 import io
 
-# 1. إعدادات الصفحة ودعم اللغة العربية (RTL) والتصميم الأنيق
-st.set_page_config(page_title="منظومة ذكاء وتطهير بيانات المبيعات", layout="wide")
+# 1. إعدادات الصفحة الأساسية بدون تعقيدات CSS
+st.set_page_config(page_title="منظومة ذكاء وتطهير البيانات", layout="wide")
 
-st.markdown("""
-<style>
-    @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&display=swap');
-    html, body, [data-testid="stSidebarCodeBlock"], .stMarkdown, .stSelectbox, div {
-        font-family: 'Cairo', sans-serif;
-        direction: RTL;
-        text-align: right;
-    }
-    .metric-card {
-        background-color: #f8f9fa;
-        border-right: 5px solid #007bff;
-        padding: 20px;
-        border-radius: 8px;
-        box-shadow: 0 2px 4px rgba(0,0,0,0.05);
-        margin-bottom: 15px;
-    }
-    .insight-box {
-        background-color: #e9ecef;
-        border-right: 5px solid #28a745;
-        padding: 15px;
-        border-radius: 5px;
-        margin-top: 10px;
-        line-height: 1.6;
-    }
-</style>
-""", unsafe_allow_html=True)
-
-st.title("📊 منظومة ذكاء وتطهير بيانات المبيعات للمتاجر الإلكترونية")
+st.title("📊 منظومة ذكاء وتطهير بيانات المبيعات")
 st.write("اصنع تقاريرك المحاسبية النظيفة واستخلص الرؤى الإستراتيجية بضغطة زر واحدة.")
 
 # 2. آلية توليد البيانات التجريبية أو رفع ملف مخصص
@@ -52,7 +25,6 @@ if uploaded_file is not None:
         st.error(f"حدث خطأ أثناء قراءة الملف: {e}")
 
 elif generate_mock:
-    # صناعة بيانات فوضوية عمداً للاختبار الإداري والتسويقي
     np.random.seed(42)
     rows = 150
     cities = ['الرياض', 'جدة', 'الدمام', 'مكة']
@@ -62,7 +34,6 @@ elif generate_mock:
     prod_pool = np.random.choice(products, size=rows)
     city_pool = np.random.choice(cities, size=rows)
     
-    # إدخال قيم سالبة ومفقودة عمداً لبيان قوة التطهير
     quantities = np.random.randint(1, 10, size=rows).astype(float)
     quantities[np.random.choice(rows, 10, replace=False)] = -5 
     quantities[np.random.choice(rows, 8, replace=False)] = np.nan 
@@ -83,6 +54,7 @@ elif generate_mock:
 
 # 3. محرك المعالجة والتطهير والتحليل الذكي
 if df_raw is not None:
+    st.markdown("---")
     st.subheader("🛠️ أولاً: الفحص والطهير الأوتوماتيكي للبيانات")
     
     dup_count = df_raw.duplicated().sum()
@@ -101,16 +73,18 @@ if df_raw is not None:
     
     total_errors_fixed = dup_count + null_qty + null_price + negative_qty
     
+    # استخدام كروت المؤشرات الافتراضية الأنيقة والناعمة المتوافقة مع الجوال 100%
     col1, col2, col3 = st.columns(3)
     with col1:
-        st.markdown(f"<div class='metric-card'><h4>السجلات المكررة المحذوفة</h4><h2>{dup_count}</h2></div>", unsafe_allow_html=True)
+        st.metric(label="السجلات المكررة المحذوفة", value=f"{dup_count} سطر")
     with col2:
-        st.markdown(f"<div class='metric-card'><h4>القيم المفقودة والسالبة المصححة</h4><h2>{null_qty + null_price + negative_qty}</h2></div>", unsafe_allow_html=True)
+        st.metric(label="القيم المصلحة والمفقودة", value=f"{null_qty + null_price + negative_qty} قيمة")
     with col3:
-        st.markdown("<div class='metric-card'><h4>جاهزية وجودة البيانات الحالية</h4><h2>100%</h2></div>", unsafe_allow_html=True)
+        st.metric(label="جودة وجاهزية البيانات", value="100%")
         
     # 4. محرك ذكاء الأعمال وصناعة الاستشارات (Insights Engine)
-    st.subheader("📈 ثانياً: الملخص التنفيذي والتحليلات الإستراتيجية (Executive Summary)")
+    st.markdown("---")
+    st.subheader("📈 ثانياً: الملخص التنفيذي والأداء المالي")
     
     total_sales = df_clean['إجمالي_المبيعات'].sum()
     avg_order = df_clean['إجمالي_المبيعات'].mean()
@@ -124,29 +98,30 @@ if df_raw is not None:
     product_summary = df_clean.groupby('اسم_المنتج')['إجمالي_المبيعات'].sum().reset_index()
     top_product = product_summary.sort_values(by='إجمالي_المبيعات', ascending=False).iloc[0]['اسم_المنتج']
 
+    # عرض المؤشرات المالية بالشكل الافتراضي الأنيق
     m1, m2, m3 = st.columns(3)
     with m1:
-        st.markdown(f"<div class='metric-card'><h4>إجمالي صافي المبيعات</h4><h2>{total_sales:,.2f} ر.س</h2></div>", unsafe_allow_html=True)
+        st.metric(label="إجمالي صافي المبيعات", value=f"{total_sales:,.2f} ر.س")
     with m2:
-        st.markdown(f"<div class='metric-card'><h4>متوسط قيمة الطلب الفعلي</h4><h2>{avg_order:,.2f} ر.س</h2></div>", unsafe_allow_html=True)
+        st.metric(label="متوسط قيمة الطلب", value=f"{avg_order:,.2f} ر.س")
     with m3:
-        st.markdown(f"<div class='metric-card'><h4>حجم العمليات (الطلبات النظيفة)</h4><h2>{total_orders} طلب</h2></div>", unsafe_allow_html=True)
+        st.metric(label="حجم العمليات الناجحة", value=f"{total_orders} طلب")
 
-    st.markdown("### 🧠 التوصيات وقراءة الأداء المالي للفترة الحالية:")
+    # استخدام صندوق معلومات التوصيات الذكي الافتراضي والأنيق جداً (st.info)
+    st.markdown("### 🧠 التوصيات الإستراتيجية للأداء الحالي:")
     
-    insight_text = f"• **المنتج القيادي:** يعتبر منتج (**{top_product}**) هو المحرك الأساسي لحجم الإيرادات في المتجر.\n\n"
-    insight_text += f"• **التوزيع الجغرافي:** تعد مدينة (**{top_city}**) هي السوق الأكثر نشاطاً وتوليداً للأرباح.\n\n"
+    insight_text = f"• المنتج القيادي: يعتبر منتج ({top_product}) هو المحرك الأساسي لحجم الإيرادات في المتجر.\n\n"
+    insight_text += f"• التوزيع الجغرافي: تعد مدينة ({top_city}) هي السوق الأكثر نشاطاً وتوليداً للأرباح.\n\n"
     
     if cv_sales > 0.8:
-        insight_text += "• **تنبيه إدارة المخاطر (تذبذب عالٍ):** يلاحظ النظام وجود تشتت وتذبذب كبير في قيم المبيعات اليومية. "
-        insight_text += "هذا يعني الاعتماد على صفقات كبيرة متباعدة بدلاً من الاستقرار المالي اليومي. "
-        insight_text += "نوصي بمراجعة سياسات التسعير وعمل عروض مستمرة لتثبيت قاعدة الإيرادات."
+        insight_text += "• تنبيه إدارة المخاطر (تذبذب عالٍ): يلاحظ وجود تشتت كبير في قيم المبيعات اليومية، مما يعني الاعتماد على صفقات كبيرة متباعدة. نوصي بعمل عروض مستمرة لتثبيت قاعدة الإيرادات."
     else:
-        insight_text += "• **الاستقرار التجاري:** هناك استقرار نسبي وتوزيع متزن في حجم المبيعات اليومية، مما يقلل المخاطر التشغيلية للمتجر."
+        insight_text += "• الاستقرار التجاري: هناك استقرار نسبي وتوزيع متزن في حجم المبيعات اليومية، مما يقلل المخاطر التشغيلية."
 
-    st.markdown(f"<div class='insight-box'>{insight_text}</div>", unsafe_allow_html=True)
+    st.info(insight_text)
 
-    # 5. عرض الرسوم البيانية التفاعلية في الواجهة
+    # 5. عرض الرسوم البيانية التفاعلية الناعمة
+    st.markdown("---")
     st.subheader("📊 ثالثاً: التوزيع الإحصائي للمبيعات")
     c1, c2 = st.columns(2)
     with c1:
@@ -156,7 +131,7 @@ if df_raw is not None:
         st.write("أداء المنتجات المالي:")
         st.bar_chart(data=product_summary, x='اسم_المنتج', y='إجمالي_المبيعات', use_container_width=True)
 
-    # 6. بناء وتصدير ملف الـ Excel الاحترافي بميزاته الجديدة (xlsxwriter)
+    # 6. بناء وتصدير ملف الـ Excel الاحترافي بميزاته الجديدة
     excel_buffer = io.BytesIO()
     with pd.ExcelWriter(excel_buffer, engine='xlsxwriter') as writer:
         df_clean.to_excel(writer, sheet_name='البيانات المطهوة النظيفة', index=False)
@@ -203,6 +178,7 @@ if df_raw is not None:
         chart.set_style(10)
         worksheet_summary.insert_chart('D3', chart)
 
+    st.markdown("---")
     st.subheader("📥 رابعاً: تحميل التقارير الإدارية النهائية")
     st.download_button(
         label="📥 تحميل تقرير Excel المطور (يشمل الملخص التنفيذي والرسم البياني)",
